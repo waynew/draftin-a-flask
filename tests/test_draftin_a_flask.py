@@ -10,6 +10,9 @@ Tests for `draftin_a_flask` module.
 
 import pytest
 import os
+import json
+
+from mock import MagicMock, call
 
 from draftin_a_flask import draftin_a_flask
 
@@ -55,3 +58,36 @@ def test_GET_to_secret_endpoint_should_405(secret_file):
     assert rv.status_code == 405
 
 
+def test_POST_to_secret_endpoint_should_call_publish():
+    reload(draftin_a_flask)
+    test_client = draftin_a_flask.app.test_client()
+    draftin_a_flask.publish = MagicMock()
+    data = {'id': 12345,
+            'name': "Some document",
+            'content': 'Some markdown',
+            'content_html': 'Some html',
+            'user': {'id': 42, 'email': 'fnord@fnord'},
+            "created_at": "2013-05-23T14:11:54-05:00",
+            "updated_at": "2013-05-23T14:11:58-05:00"
+            }
+    rv = test_client.post(draftin_a_flask.app.secret_key,
+            data=json.dumps(data),
+                          content_type='application/json')
+    expected = [call.publish(data['content'])]
+    assert draftin_a_flask.publish.mock_calls == expected
+    
+
+def test_POST_to_secret_endpoint_with_no_content_should_500():
+    reload(draftin_a_flask)
+    test_client = draftin_a_flask.app.test_client()
+    data = {'id': 12345,
+            'name': "Some document",
+            'content_html': 'Some html',
+            'user': {'id': 42, 'email': 'fnord@fnord'},
+            "created_at": "2013-05-23T14:11:54-05:00",
+            "updated_at": "2013-05-23T14:11:58-05:00"
+            }
+    rv = test_client.post(draftin_a_flask.app.secret_key,
+            data=json.dumps(data),
+                          content_type='application/json')
+    assert rv.status_code == 500
