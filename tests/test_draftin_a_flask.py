@@ -19,6 +19,7 @@ def secret_file():
     secret_file = os.path.join(package_root, 'draftin_a_flask', 's3kret.key')
     return secret_file
 
+
 def test_if_secret_keyfile_is_missing_it_should_create_on_setup(secret_file):
     if os.path.isfile(secret_file):
         os.unlink(secret_file)
@@ -27,3 +28,18 @@ def test_if_secret_keyfile_is_missing_it_should_create_on_setup(secret_file):
     draftin_a_flask.setup()
 
     assert os.path.isfile(secret_file)
+
+
+def test_after_delete_secret_file_should_contain_different_string(secret_file):
+    if os.path.isfile(secret_file):
+        os.unlink(secret_file)
+    draftin_a_flask.setup()
+    with open(secret_file) as f:
+        old_secret = f.read()
+    os.unlink(secret_file)
+
+    draftin_a_flask.setup()
+
+    with open(secret_file) as f:
+        new_secret = f.read()
+    assert old_secret != new_secret
