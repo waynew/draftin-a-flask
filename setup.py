@@ -40,6 +40,7 @@ setup(
     packages=[
         'draftin_a_flask',
     ],
+    scripts=['scripts/draftican'],
     cmdclass={'test': PyTest},
     package_dir={'draftin_a_flask': 'draftin_a_flask'},
     include_package_data=True,

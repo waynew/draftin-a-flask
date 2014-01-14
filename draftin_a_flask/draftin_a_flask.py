@@ -9,11 +9,15 @@ from . import utils
 from flask import Flask, request
 
 app = Flask(__name__)
-OUTPUT = 'output'
-CONTENT = 'content'
+OUTPUT = '/home/wayne/test/fnordy'
+CONTENT = '/home/wayne/test/fnordy-in'
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_FILE = os.path.join(ROOT, 's3kret.key')
-PELICAN = '/path/to/pelican'
+PELICAN = '/home/wayne/.virtualenvs/waynewerner.com/bin/pelican'
+SSH_PORT = 22
+SSH_USER = 'fnord'
+SSH_HOST = 'localhost'
+SSH_TARGET_DIR = '/tmp/'
 
 
 def setup():
@@ -29,10 +33,12 @@ with open(SECRET_FILE) as f:
 @app.route('/'+app.secret_key, methods=['POST'])
 def main():
     data = json.loads(request.data)
+    name = data.get('name')
     content = data.get('content')
     #if content is None:
     #    return 'Missing content', 500
-    publish(content)
+    publish(name, content)
+    return "OK"
 
 
 def publish(name, content):
@@ -47,3 +53,19 @@ def publish(name, content):
                                       CONTENT, 
                                       '-o', 
                                       OUTPUT])
+    subprocess.check_output(['rsync',
+                             '-e',
+                             '"ssh -p {}"'.format(SSH_PORT),
+                             '-P',
+                             '-rvz',
+                             '--delete',
+                             os.path.join(OUTPUT, '*'),
+                             '{}@{}:{}'.format(SSH_USER,
+                                               SSH_HOST,
+                                               SSH_TARGET_DIR),
+                            ])
+#    rsync -e "ssh -p $(SSH_PORT)" -P -rvz --delete $(OUTPUTDIR)/* $(SSH_USER)@$(SSH_HOST):$(SSH_TARGET_DIR) 
+
+
+if __name__ == "__main__":
+    app.run('0.0.0.0', port=5678, debug=True)

@@ -43,3 +43,6 @@ docs/_build
 
 *.swp
 s3kret.key
+
+*draftin_a_flask/content/*
+*draftin_a_flask/output/*
