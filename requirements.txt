@@ -7,4 +7,3 @@ itsdangerous==0.23
 py==1.4.19
 pytest==2.5.1
 tox==1.6.1
-wsgiref==0.1.2
