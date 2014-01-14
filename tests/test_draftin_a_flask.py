@@ -13,9 +13,13 @@ import os
 
 from draftin_a_flask import draftin_a_flask
 
-def test_on_server_setup_if_secret_keyfile_is_missing_it_should_create():
+@pytest.fixture
+def secret_file():
     package_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     secret_file = os.path.join(package_root, 'draftin_a_flask', 's3kret.key')
+    return secret_file
+
+def test_if_secret_keyfile_is_missing_it_should_create_on_setup(secret_file):
     if os.path.isfile(secret_file):
         os.unlink(secret_file)
     assert not os.path.exists(secret_file)
