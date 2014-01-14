@@ -9,15 +9,15 @@ from . import utils
 from flask import Flask, request
 
 app = Flask(__name__)
-OUTPUT = '/home/wayne/test/fnordy'
-CONTENT = '/home/wayne/test/fnordy-in'
+OUTPUT = '/path/to/output'
+CONTENT = '/path/to/input'
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_FILE = os.path.join(ROOT, 's3kret.key')
-PELICAN = '/home/wayne/.virtualenvs/waynewerner.com/bin/pelican'
+PELICAN = '/path/to/pelican'
 SSH_PORT = 22
-SSH_USER = 'fnord'
+SSH_USER = 'pelican'
 SSH_HOST = 'localhost'
-SSH_TARGET_DIR = '/tmp/'
+SSH_TARGET_DIR = '/path/to/blog-root/'
 
 
 def setup():
