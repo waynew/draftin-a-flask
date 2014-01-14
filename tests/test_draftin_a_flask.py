@@ -17,6 +17,7 @@ from draftin_a_flask import draftin_a_flask
 def secret_file():
     package_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     secret_file = os.path.join(package_root, 'draftin_a_flask', 's3kret.key')
+    draftin_a_flask.setup()
     return secret_file
 
 
@@ -43,3 +44,14 @@ def test_after_delete_secret_file_should_contain_different_string(secret_file):
     with open(secret_file) as f:
         new_secret = f.read()
     assert old_secret != new_secret
+
+
+def test_GET_to_secret_endpoint_should_405(secret_file):
+    reload(draftin_a_flask)
+    test_client = draftin_a_flask.app.test_client()
+    with open(secret_file) as f:
+        key = f.read()
+    rv = test_client.get(key)
+    assert rv.status_code == 405
+
+
