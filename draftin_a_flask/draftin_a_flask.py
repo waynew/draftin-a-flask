@@ -2,13 +2,19 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 import os
-from . import utils
+import re
 import json
+import subprocess
+from . import utils
 from flask import Flask, request
 
 app = Flask(__name__)
+OUTPUT = 'output'
+CONTENT = 'content'
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_FILE = os.path.join(ROOT, 's3kret.key')
+PELICAN = '/path/to/pelican'
+
 
 def setup():
     if not os.path.isfile(SECRET_FILE):
@@ -29,5 +35,15 @@ def main():
     publish(content)
 
 
-def publish(arg):
-    pass
+def publish(name, content):
+    name = re.sub('[^a-zA-Z]', '-', name) + '.md'
+    dir_ = os.path.join(ROOT, CONTENT)
+    if not os.path.exists(dir_):
+        os.makedirs(dir_)
+    fname = os.path.join(dir_, name)
+    with open(fname, 'w') as f:
+        f.write(content)
+    output = subprocess.check_output([PELICAN,
+                                      CONTENT, 
+                                      '-o', 
+                                      OUTPUT])

@@ -11,10 +11,12 @@ Tests for `draftin_a_flask` module.
 import pytest
 import os
 import json
+import shutil
 
 from mock import MagicMock, call
 
 from draftin_a_flask import draftin_a_flask
+
 
 @pytest.fixture
 def secret_file():
@@ -91,3 +93,60 @@ def test_POST_to_secret_endpoint_with_no_content_should_500():
             data=json.dumps(data),
                           content_type='application/json')
     assert rv.status_code == 500
+
+
+def test_if_content_directory_does_not_exist_it_should_get_made():
+    draftin_a_flask.subprocess = MagicMock()
+    content = os.path.join(draftin_a_flask.ROOT,
+                           draftin_a_flask.CONTENT)
+    if os.path.exists(content):
+        shutil.rmtree(content)
+
+    draftin_a_flask.publish('whatev', 'This is some *content*')
+
+    is_dir = os.path.isdir(content)
+    assert is_dir
+
+
+def test_passing_name_and_content_to_publish_should_write_it_to_content_dir():
+    draftin_a_flask.subprocess = MagicMock()
+    draftin_a_flask.CONTENT = 'content'
+    name = "fnordy fnord"
+    fname = os.path.join(draftin_a_flask.ROOT,
+                         draftin_a_flask.CONTENT,
+                         name.replace(' ', '-') + '.md')
+
+    draftin_a_flask.publish(name, 'This is some *content*')
+
+    is_file = os.path.isfile(fname)
+    assert is_file
+
+
+def test_publish_should_actually_write_content():
+    draftin_a_flask.subprocess = MagicMock()
+    draftin_a_flask.CONTENT = 'fnord'
+    expected_content = "This is some sweet *content*"
+    name = "fnordy fnord"
+    fname = os.path.join(draftin_a_flask.ROOT,
+                         draftin_a_flask.CONTENT,
+                         name.replace(' ', '-') + '.md')
+
+    draftin_a_flask.publish(name, expected_content)
+
+    with open(fname) as f:
+        actual_content = f.read()
+        assert actual_content == expected_content
+
+    shutil.rmtree(os.path.join(draftin_a_flask.ROOT, draftin_a_flask.CONTENT))
+
+
+def test_passing_content_to_publish_should_call_pelican():
+    draftin_a_flask.subprocess = MagicMock()
+    expected = [call.check_output([draftin_a_flask.PELICAN,
+                                   draftin_a_flask.CONTENT, 
+                                   '-o', 
+                                   draftin_a_flask.OUTPUT])]
+
+    draftin_a_flask.publish('a name', 'This is some content')
+
+    assert draftin_a_flask.subprocess.mock_calls == expected
