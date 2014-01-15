@@ -1,0 +1,3 @@
+#!/usr/bin/env python
+from draftin_a_flask import draftin_a_flask
+draftin_a_flask.app.run('0.0.0.0', port=5678, debug=True)
