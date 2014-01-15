@@ -11,13 +11,9 @@ from flask import Flask, request
 app = Flask(__name__)
 OUTPUT = 'path/to/output'
 CONTENT = 'path/to/input'
+PELICAN = '/path/to/pelican'
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_FILE = os.path.join(ROOT, 's3kret.key')
-PELICAN = '/path/to/pelican'
-SSH_PORT = 22
-SSH_USER = 'pelican'
-SSH_HOST = 'localhost'
-SSH_TARGET_DIR = '/path/to/blog-root/'
 
 
 def setup():
@@ -53,18 +49,6 @@ def publish(name, content):
                                       CONTENT, 
                                       '-o', 
                                       OUTPUT])
-    subprocess.check_output(['rsync',
-                             '-e',
-                             '"ssh -p {}"'.format(SSH_PORT),
-                             '-P',
-                             '-rvz',
-                             '--delete',
-                             os.path.join(OUTPUT, '*'),
-                             '{}@{}:{}'.format(SSH_USER,
-                                               SSH_HOST,
-                                               SSH_TARGET_DIR),
-                            ])
-#    rsync -e "ssh -p $(SSH_PORT)" -P -rvz --delete $(OUTPUTDIR)/* $(SSH_USER)@$(SSH_HOST):$(SSH_TARGET_DIR) 
 
 
 if __name__ == "__main__":

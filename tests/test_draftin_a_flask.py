@@ -145,25 +145,23 @@ def test_publish_should_actually_write_content():
     shutil.rmtree(os.path.join(draftin_a_flask.ROOT, draftin_a_flask.CONTENT))
 
 
-def test_passing_content_to_publish_should_call_pelican_and_rsync():
+def test_passing_content_to_publish_should_call_pelican():
     draftin_a_flask.subprocess = MagicMock()
     expected = [call.check_output([draftin_a_flask.PELICAN,
                                    draftin_a_flask.CONTENT, 
                                    '-o', 
                                    draftin_a_flask.OUTPUT]),
-                call.check_output(['rsync',
-                                   '-e',
-                                   '"ssh -p {}"'.format(draftin_a_flask.SSH_PORT),
-                                   '-P',
-                                   '-rvz',
-                                   '--delete',
-                                   os.path.join(draftin_a_flask.OUTPUT, '*'),
-                                   '{}@{}:{}'.format(draftin_a_flask.SSH_USER,
-                                                     draftin_a_flask.SSH_HOST,
-                                                     draftin_a_flask.SSH_TARGET_DIR),
-                                   ])                   
                 ]
 
     draftin_a_flask.publish('a name', 'This is some content')
 
     assert draftin_a_flask.subprocess.mock_calls == expected
+
+
+def test_if_environment_values_are_set_they_should_be_preferred():
+    pytest.skip()
+    os.environ['DIF_PELICAN'] = 'pelican or pelicant?'
+    os.environ['DIF_CONTENT'] = "Well isn't that special?"
+    os.environ['DIF_OUTPUT'] = 'Buuuuuurrrrp'
+
+
