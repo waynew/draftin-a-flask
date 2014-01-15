@@ -12,6 +12,7 @@ app = Flask(__name__)
 OUTPUT = os.environ.get('DIF_OUTPUT', 'path/to/output')
 CONTENT = os.environ.get('DIF_CONTENT', 'path/to/input')
 PELICAN = os.environ.get('DIF_PELICAN', '/path/to/pelican')
+PELICANCONF = os.environ.get('DIF_PELICANCONF', '/path/to/pelicanconf.py')
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_FILE = os.path.join(ROOT, 's3kret.key')
 
@@ -48,7 +49,9 @@ def publish(name, content):
     output = subprocess.check_output([PELICAN,
                                       CONTENT, 
                                       '-o', 
-                                      OUTPUT])
+                                      OUTPUT,
+                                      '-s',
+                                      PELICANCONF])
 
 
 if __name__ == "__main__":
