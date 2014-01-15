@@ -53,5 +53,3 @@ Known Bugs
 
 * If you're missing important fields (like title and date) it probably will
   skip publishing that doc.
-* Right now it doesn't use your pelican settings file. That'll probably be
-  the first thing I fix.
