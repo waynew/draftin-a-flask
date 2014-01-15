@@ -37,7 +37,7 @@ with open(SECRET_FILE) as f:
 
 @app.route('/'+app.secret_key, methods=['POST'])
 def main():
-    data = json.loads(request.data.decode())
+    data = json.loads(request.form.get('payload'))
     name = data.get('name')
     content = data.get('content')
     #if content is None:

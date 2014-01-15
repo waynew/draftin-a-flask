@@ -73,13 +73,13 @@ def test_POST_to_secret_endpoint_should_call_publish():
             'name': "Some document",
             'content': 'Some markdown',
             'content_html': 'Some html',
-            'user': {'id': 42, 'email': 'fnord@fnord'},
+            #'user': {'id': 42, 'email': 'fnord@fnord'},
             "created_at": "2013-05-23T14:11:54-05:00",
             "updated_at": "2013-05-23T14:11:58-05:00"
             }
     rv = test_client.post(draftin_a_flask.app.secret_key,
-            data=json.dumps(data),
-                          content_type='application/json')
+            data={'payload':json.dumps(data)})
+            
     expected = [call.publish(data['name'], data['content'])]
     assert draftin_a_flask.publish.mock_calls == expected
     
