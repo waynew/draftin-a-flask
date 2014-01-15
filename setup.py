@@ -31,7 +31,7 @@ class PyTest(TestCommand):
 
 setup(
     name='draftin_a_flask',
-    version='0.1.4',
+    version='0.1.5',
     description='A simple Flask server that allows you to publish Pelican blags from http://draftin.com',
     long_description=readme + '\n\n' + history,
     author='Wayne Werner',

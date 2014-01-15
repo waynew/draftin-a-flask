@@ -47,7 +47,7 @@ def main():
 
 
 def publish(name, content):
-    name = re.sub('[^a-zA-Z]', '-', name) + '.md'
+    name = re.sub(r'[^a-zA-Z\\/]', '-', name) + '.md'
     dir_ = os.path.join(ROOT, CONTENT)
     if not os.path.exists(dir_):
         os.makedirs(dir_)
@@ -60,6 +60,7 @@ def publish(name, content):
                                       OUTPUT,
                                       '-s',
                                       PELICANCONF])
+    app.logger.debug(output)
 
 
 if __name__ == "__main__":
