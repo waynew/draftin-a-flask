@@ -13,6 +13,11 @@ import os
 import json
 import shutil
 
+try:
+    from imp import reload
+except ImportError:
+    pass
+
 from mock import MagicMock, call
 
 from draftin_a_flask import draftin_a_flask

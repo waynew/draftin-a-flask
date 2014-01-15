@@ -9,4 +9,4 @@ except NameError:
 
 def random_string(size):
     for _ in range(size):
-        yield random.choice(string.letters+string.digits)
+        yield random.choice(string.ascii_letters+string.digits)
