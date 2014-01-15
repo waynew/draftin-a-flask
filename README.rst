@@ -16,7 +16,7 @@ A simple Flask server that allows you to publish Pelican blags from
 http://draftin.com using
 [WebHooks](https://draftin.com/documents/69898?token=5fjKKlZ0-AeBzqj_RAftAGdzRzl9VBfBHj5wpSWm_gU)
 
-* Free software: MIT license
+* Free software: BSD license
 * Documentation: http://draftin-a-flask.rtfd.org.
 
 Usage
