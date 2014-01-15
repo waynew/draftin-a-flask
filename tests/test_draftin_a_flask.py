@@ -176,3 +176,19 @@ def test_if_environment_values_are_set_they_should_be_preferred():
     assert draftin_a_flask.PELICAN == pelican
     assert draftin_a_flask.CONTENT == content
     assert draftin_a_flask.OUTPUT == output
+
+
+def test_if_draftican_file_is_present_it_should_read_conf_values():
+    with open('.draftican', 'w') as f:
+        f.write(json.dumps(dict(OUTPUT='output',
+                                CONTENT='content',
+                                PELICAN='pelican',
+                                PELICANCONF='pelicanconf')))
+
+    reload(draftin_a_flask)
+    os.unlink('.draftican')
+
+    assert draftin_a_flask.PELICANCONF == 'pelicanconf'
+    assert draftin_a_flask.PELICAN == 'pelican'
+    assert draftin_a_flask.CONTENT == 'content'
+    assert draftin_a_flask.OUTPUT == 'output'

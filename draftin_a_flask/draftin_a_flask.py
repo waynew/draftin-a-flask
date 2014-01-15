@@ -9,6 +9,14 @@ from . import utils
 from flask import Flask, request
 
 app = Flask(__name__)
+if os.path.isfile('.draftican'):
+    with open('.draftican') as f:
+        data = json.load(f)
+        os.environ['DIF_OUTPUT'] = data.get('OUTPUT')
+        os.environ['DIF_CONTENT'] = data.get('CONTENT')
+        os.environ['DIF_PELICAN'] = data.get('PELICAN')
+        os.environ['DIF_PELICANCONF'] = data.get('PELICANCONF')
+
 OUTPUT = os.environ.get('DIF_OUTPUT', 'path/to/output')
 CONTENT = os.environ.get('DIF_CONTENT', 'path/to/input')
 PELICAN = os.environ.get('DIF_PELICAN', '/path/to/pelican')
