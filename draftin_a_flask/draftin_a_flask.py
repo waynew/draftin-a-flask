@@ -9,9 +9,9 @@ from . import utils
 from flask import Flask, request
 
 app = Flask(__name__)
-OUTPUT = 'path/to/output'
-CONTENT = 'path/to/input'
-PELICAN = '/path/to/pelican'
+OUTPUT = os.environ.get('DIF_OUTPUT', 'path/to/output')
+CONTENT = os.environ.get('DIF_CONTENT', 'path/to/input')
+PELICAN = os.environ.get('DIF_PELICAN', '/path/to/pelican')
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_FILE = os.path.join(ROOT, 's3kret.key')
 

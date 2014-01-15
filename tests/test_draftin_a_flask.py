@@ -159,9 +159,15 @@ def test_passing_content_to_publish_should_call_pelican():
 
 
 def test_if_environment_values_are_set_they_should_be_preferred():
-    pytest.skip()
-    os.environ['DIF_PELICAN'] = 'pelican or pelicant?'
-    os.environ['DIF_CONTENT'] = "Well isn't that special?"
-    os.environ['DIF_OUTPUT'] = 'Buuuuuurrrrp'
+    pelican = 'pelican or pelicant?'
+    content = "Well isn't that special?"
+    output = 'Buuuuuurrrrp' # get it?
+    os.environ['DIF_PELICAN'] = pelican
+    os.environ['DIF_CONTENT'] = content
+    os.environ['DIF_OUTPUT'] = output
 
+    reload(draftin_a_flask)
 
+    assert draftin_a_flask.PELICAN == pelican
+    assert draftin_a_flask.CONTENT == content
+    assert draftin_a_flask.OUTPUT == output
