@@ -150,7 +150,9 @@ def test_passing_content_to_publish_should_call_pelican():
     expected = [call.check_output([draftin_a_flask.PELICAN,
                                    draftin_a_flask.CONTENT, 
                                    '-o', 
-                                   draftin_a_flask.OUTPUT]),
+                                   draftin_a_flask.OUTPUT,
+                                   '-s',
+                                   draftin_a_flask.PELICANCONF]),
                 ]
 
     draftin_a_flask.publish('a name', 'This is some content')
@@ -159,15 +161,34 @@ def test_passing_content_to_publish_should_call_pelican():
 
 
 def test_if_environment_values_are_set_they_should_be_preferred():
+    pelicanconf = 'repelicant'
     pelican = 'pelican or pelicant?'
     content = "Well isn't that special?"
     output = 'Buuuuuurrrrp' # get it?
+    os.environ['DIF_PELICANCONF'] = pelicanconf
     os.environ['DIF_PELICAN'] = pelican
     os.environ['DIF_CONTENT'] = content
     os.environ['DIF_OUTPUT'] = output
 
     reload(draftin_a_flask)
 
+    assert draftin_a_flask.PELICANCONF == pelicanconf
     assert draftin_a_flask.PELICAN == pelican
     assert draftin_a_flask.CONTENT == content
     assert draftin_a_flask.OUTPUT == output
+
+
+def test_if_draftican_file_is_present_it_should_read_conf_values():
+    with open('.draftican', 'w') as f:
+        f.write(json.dumps(dict(OUTPUT='output',
+                                CONTENT='content',
+                                PELICAN='pelican',
+                                PELICANCONF='pelicanconf')))
+
+    reload(draftin_a_flask)
+    os.unlink('.draftican')
+
+    assert draftin_a_flask.PELICANCONF == 'pelicanconf'
+    assert draftin_a_flask.PELICAN == 'pelican'
+    assert draftin_a_flask.CONTENT == 'content'
+    assert draftin_a_flask.OUTPUT == 'output'

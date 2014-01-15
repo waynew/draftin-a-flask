@@ -9,9 +9,18 @@ from . import utils
 from flask import Flask, request
 
 app = Flask(__name__)
+if os.path.isfile('.draftican'):
+    with open('.draftican') as f:
+        data = json.load(f)
+        os.environ['DIF_OUTPUT'] = data.get('OUTPUT')
+        os.environ['DIF_CONTENT'] = data.get('CONTENT')
+        os.environ['DIF_PELICAN'] = data.get('PELICAN')
+        os.environ['DIF_PELICANCONF'] = data.get('PELICANCONF')
+
 OUTPUT = os.environ.get('DIF_OUTPUT', 'path/to/output')
 CONTENT = os.environ.get('DIF_CONTENT', 'path/to/input')
 PELICAN = os.environ.get('DIF_PELICAN', '/path/to/pelican')
+PELICANCONF = os.environ.get('DIF_PELICANCONF', '/path/to/pelicanconf.py')
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_FILE = os.path.join(ROOT, 's3kret.key')
 
@@ -48,7 +57,9 @@ def publish(name, content):
     output = subprocess.check_output([PELICAN,
                                       CONTENT, 
                                       '-o', 
-                                      OUTPUT])
+                                      OUTPUT,
+                                      '-s',
+                                      PELICANCONF])
 
 
 if __name__ == "__main__":
