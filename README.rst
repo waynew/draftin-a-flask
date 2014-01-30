@@ -5,8 +5,8 @@ Draft in a Flask
 .. image:: https://badge.fury.io/py/draftin_a_flask.png
     :target: http://badge.fury.io/py/draftin_a_flask
     
-.. image:: https://travis-ci.org/waynew/draftin_a_flask.png?branch=master
-        :target: https://travis-ci.org/waynew/draftin_a_flask
+.. image:: https://travis-ci.org/waynew/draftin-a-flask.png?branch=master
+        :target: https://travis-ci.org/waynew/draftin-a-flask
 
 .. image:: https://pypip.in/d/draftin_a_flask/badge.png
         :target: https://crate.io/packages/draftin_a_flask?version=latest
