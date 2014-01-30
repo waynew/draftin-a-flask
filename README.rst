@@ -34,7 +34,7 @@ Usage
     * Restarting with reloader
     Listening at endpoint QRFky1tR0KqHGM3cJoitwEi8tTpknaNnMpNHHiTIm8
     
-(Yes, it displays the print twice :-\ I'm sure there's a way to get around it. If
+(Yes, it displays the print twice :-\\ I'm sure there's a way to get around it. If
 it bothers you too much, I accept pull requests!
 
 Setup your WebHook from within Draft, and now you can write your blog posts in
