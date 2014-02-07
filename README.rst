@@ -12,7 +12,7 @@ Draft in a Flask
         :target: https://crate.io/packages/draftin_a_flask?version=latest
 
 
-A simple Flask server that allows you to publish Pelican blags from 
+A simple Flask server that allows you to publish Pelican blogs from 
 http://draftin.com using `WebHooks`_
 
 .. _WebHooks: https://draftin.com/documents/69898?token=5fjKKlZ0-AeBzqj_RAftAGdzRzl9VBfBHj5wpSWm_gU)
@@ -35,7 +35,7 @@ Usage
     Listening at endpoint QRFky1tR0KqHGM3cJoitwEi8tTpknaNnMpNHHiTIm8
     
 (Yes, it displays the print twice :-\\ I'm sure there's a way to get around it. If
-it bothers you too much, I accept pull requests!
+it bothers you too much, I accept pull requests!)
 
 Setup your WebHook from within Draft, and now you can write your blog posts in
 Draft and easily publish.
