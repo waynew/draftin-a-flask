@@ -1,4 +1,6 @@
+.env/*
 *.py[cod]
+.eggs/*
 
 # C extensions
 *.so
